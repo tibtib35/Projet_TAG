@@ -10,8 +10,8 @@ Notre super projet d'ouv info
 - [X] Intégrer la détection de collision simple Joueur/Plateforme **Thibault**
 
 ## 🟩 Version 1.0 : Le Gameplay "Tag"
-- [ ] Coder la logique de transfert du Loup par collision **Thibault**
-- [ ] Créer le timer d'invincibilité de 3s après avoir été loup (anti-re-tag) **Thibault**
+- [X] Coder la logique de transfert du Loup par collision **Thibault**
+- [X] Créer le timer d'invincibilité de 3s après avoir été loup (anti-re-tag) **Thibault**
 - [X] Créer le Timer de partie (compte à rebours au centre haut) **AxelM**
 - [ ] Dessiner l'indicateur "Losange" qui suit le loup au-dessus de sa tête **AxelC**
 
