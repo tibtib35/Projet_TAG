@@ -11,7 +11,7 @@ class GameConfig:
     FORCE_LEFT = -20
     FORCE_RIGHT = -FORCE_LEFT
     GRAVITY = 4
-    FORCE_JUMP = -90
+    FORCE_JUMP = -67
     JUMP_DELAY = 150 # ms
 
 
