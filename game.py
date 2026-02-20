@@ -39,7 +39,7 @@ def game_loop(surface):
 if __name__ == "__main__":
     pygame.init()
     GameConfig.init()
-    window = pygame.display.set_mode(size=(800, 500))
+    window = pygame.display.set_mode(size=(900, 616))
     pygame.display.set_caption("TAG")
     game_loop(window)
     pygame.quit()
