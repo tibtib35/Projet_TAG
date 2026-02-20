@@ -46,7 +46,13 @@ def game_loop(surface):
         game_state.draw(surface)
         
         # 4. Rafraîchissement
-        window.blit(font.render(text, True, (0, 0, 0)), (32, 48))
+
+        #Affichage du timer
+        timer_surface = font.render(text, True, (0, 0, 0))
+        timer_rect = timer_surface.get_rect(midtop=(GameConfig.WINDOWW // 2, 20))
+        window.blit(timer_surface, timer_rect)
+
+
         pygame.display.update()
         clock.tick(60)
 
