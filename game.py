@@ -1,5 +1,5 @@
 import pygame
-
+print("Coucou")
 def game_loop(surface):
     quitting = False
     while not quitting:
