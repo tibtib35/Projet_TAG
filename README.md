@@ -4,10 +4,10 @@ Notre super projet d'ouv info
 # Road Map
 
 ## 🟦 Version 0.1 : Le Socle
-- [ ] Créer la classe `Player` (ID, contrôles personnalisés, double saut) **Thibault**
-- [ ] Mettre en place la boucle de jeu `main.py` et le gestionnaire d'états (Menu/Jeu) **AxelM**
-- [ ] Dessiner la map fixe (liste de Rectangles pour les plateformes) **AxelC**
-- [ ] Intégrer la détection de collision simple Joueur/Plateforme **Thibault**
+- [X] Créer la classe `Player` (ID, contrôles personnalisés, double saut) **Thibault**
+- [X] Mettre en place la boucle de jeu `main.py` et le gestionnaire d'états (Menu/Jeu) **AxelM**
+- [X] Dessiner la map fixe (liste de Rectangles pour les plateformes) **AxelC**
+- [X] Intégrer la détection de collision simple Joueur/Plateforme **Thibault**
 
 ## 🟩 Version 1.0 : Le Gameplay "Tag"
 - [ ] Coder la logique de transfert du Loup par collision **Thibault**
@@ -16,7 +16,7 @@ Notre super projet d'ouv info
 - [ ] Dessiner l'indicateur "Losange" qui suit le loup au-dessus de sa tête **AxelC**
 
 ## 🟨 Version 2.0 : Visuels & Caméra
-- [ ] Coder l'algorithme du Zoom Barycentrique (Calcul des limites des 4 joueurs) **Thibault**
+- [ ] Coder l'algorithme du Zoom Barycentrique (Calcul des limites des 3 joueurs) **Thibault**
 - [ ] Créer l'écran de Menu (Boutons : Start, Paramètres, Quitter) **AxelM**
 - [ ] Créer le menu de changement de touches (Key-rebinding) **AxelM**
 - [ ] Réaliser les sprites d'animation simples (Idle, Run, Jump) pour les persos **AxelC**

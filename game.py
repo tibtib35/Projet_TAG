@@ -3,16 +3,36 @@ from game_config import GameConfig
 from game_state import GameState
 from move import Move
 
-def get_next_move():
-        next_move = Move()
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP]:
-            next_move.jump = True
-        if keys[pygame.K_LEFT]:
-            next_move.left = True
-        if keys[pygame.K_RIGHT]:
-            next_move.right = True
-        return next_move
+def get_next_moves(player_count):
+    # On crée une liste d'objets Move, un pour chaque joueur
+    moves = [Move() for _ in range(player_count)]
+    keys = pygame.key.get_pressed()
+
+    # Joueur 1 : Flèches directionnelles
+    if keys[pygame.K_UP]:
+        moves[0].jump = True
+    if keys[pygame.K_LEFT]:
+        moves[0].left = True
+    if keys[pygame.K_RIGHT]:
+        moves[0].right = True
+
+    # Joueur 2 : Z, Q, D (si un deuxième joueur existe)
+    if player_count > 1:
+        if keys[pygame.K_z]:
+            moves[1].jump = True
+        if keys[pygame.K_q]:
+            moves[1].left = True
+        if keys[pygame.K_d]:
+            moves[1].right = True
+
+    if player_count > 2:
+        if keys[pygame.K_i]: moves[2].jump = True
+        if keys[pygame.K_j]: moves[2].left = True
+        if keys[pygame.K_l]: moves[2].right = True
+
+            
+    return moves
+        
 
 def game_loop(surface):
     quitting = False
@@ -20,19 +40,20 @@ def game_loop(surface):
     clock = pygame.time.Clock()
     
     while not quitting:
-        # 1. Gestion des événements
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quitting = True
         
-        # 2. Calcul de la logique (Mouvement et Collisions)
-        next_move = get_next_move()
-        game_state.advance_state(next_move)
+        # On récupère la liste des mouvements pour tous les joueurs
+        all_moves = get_next_moves(len(game_state.player))
         
-        # 3. Affichage (On dessine l'état qui vient d'être calculé)
+        # On fait avancer chaque joueur avec son propre mouvement
+        for i in range(len(game_state.player)):
+            # On passe l'obstacle pour la gestion des collisions
+            game_state.player[i].advance_state(all_moves[i], game_state.obstacle)
+        
+        # Affichage
         game_state.draw(surface)
-        
-        # 4. Rafraîchissement
         pygame.display.update()
         clock.tick(60)
 
