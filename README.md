@@ -11,8 +11,8 @@ Notre super projet d'ouv info
 
 ## 🟩 Version 1.0 : Le Gameplay "Tag"
 - [ ] Coder la logique de transfert du Loup par collision **Thibault**
-- [ ] Créer le timer d'invincibilité de 3s après avoir été loup (anti-re-tag) **AxelM**
-- [ ] Créer le Timer de partie (compte à rebours au centre haut) **AxelM**
+- [ ] Créer le timer d'invincibilité de 3s après avoir été loup (anti-re-tag) **Thibault**
+- [X] Créer le Timer de partie (compte à rebours au centre haut) **AxelM**
 - [ ] Dessiner l'indicateur "Losange" qui suit le loup au-dessus de sa tête **AxelC**
 
 ## 🟨 Version 2.0 : Visuels & Caméra
