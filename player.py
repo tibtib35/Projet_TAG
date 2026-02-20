@@ -43,12 +43,13 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.rect.move(dx, 0)
         
         # Vérification collision X (Murs)
-        if self.rect.colliderect(obstacle):
-            if dx > 0: # On allait vers la droite
-                self.rect.right = obstacle.left # On se colle au bord gauche du mur
-            elif dx < 0: # On allait vers la gauche
-                self.rect.left = obstacle.right # On se colle au bord droit du mur
-            self.vx = 0
+        for obs in obstacle:
+            if self.rect.colliderect(obs):
+                if dx > 0: # On allait vers la droite
+                    self.rect.right = obs.left # On se colle au bord gauche du mur
+                elif dx < 0: # On allait vers la gauche
+                    self.rect.left = obs.right # On se colle au bord droit du mur
+                self.vx = 0
 
         # Limitation aux bords de l'écran (X)
         if self.rect.x < 0: 
@@ -61,12 +62,13 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.rect.move(0, dy)
 
         # Vérification collision Y (Sol et Plafond)
-        if self.rect.colliderect(obstacle):
-            if dy > 0: # On tombait vers le bas
-                self.rect.bottom = obstacle.top # On atterrit dessus
-                self.vy = 0 
-            elif dy < 0: # On sautait vers le haut (tête cogne)
-                self.rect.top = obstacle.bottom # On tape le dessous
+        for obs in obstacle:
+            if self.rect.colliderect(obs):
+                if dy > 0: # On tombait vers le bas
+                    self.rect.bottom = obs.top # On atterrit dessus
+                    self.vy = 0 
+                elif dy < 0: # On sautait vers le haut (tête cogne)
+                    self.rect.top = obs.bottom # On tape le dessous
                 self.vy = 0
 
         # Limitation au sol global (Y)
@@ -83,4 +85,7 @@ class Player(pygame.sprite.Sprite):
         # On crée un petit rectangle juste sous les pieds du joueur pour tester
         test_rect = pygame.Rect(self.rect.x, self.rect.bottom, self.rect.width, 2)
         # Si ce petit rectangle touche l'obstacle, c'est qu'on est juste dessus
-        return test_rect.colliderect(obstacle)
+        for obs in obstacle:
+            if test_rect.colliderect(obs):
+                return True
+        return False

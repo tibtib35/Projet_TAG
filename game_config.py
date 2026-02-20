@@ -2,7 +2,7 @@ import pygame
 class GameConfig:
     WINDOWH = 640
     WINDOWW = 960
-    Y_PLATFORM = 500
+    Y_PLATFORM = 516
     PLAYER_W = 64
     PLAYER_H = 64
     BACKGROUND_IMG = None
