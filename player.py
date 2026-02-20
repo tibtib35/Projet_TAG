@@ -64,10 +64,6 @@ class Player(pygame.sprite.Sprite):
             self.rect.x = 0
         elif self.rect.x > GameConfig.WINDOWW - self.rect.width: 
             self.rect.x = GameConfig.WINDOWW - self.rect.width
-        if self.rect.y < 0:
-            self.rect.y = 0
-        elif self.rect.y > GameConfig.WINDOWH - self.rect.height:
-            self.rect.y = GameConfig.WINDOWH - self.rect.height
         # --- 3. Application du mouvement VERTICAL (Y) ---
         # On bouge ensuite en Y
         dy = self.vy * GameConfig.DT
@@ -81,13 +77,17 @@ class Player(pygame.sprite.Sprite):
                     self.vy = 0 
                 elif dy < 0: # On sautait vers le haut (tête cogne)
                     self.rect.top = obs.bottom # On tape le dessous
-                self.vy = 0
+                    self.vy = GameConfig.GRAVITY * GameConfig.DT
 
         # Limitation au sol global (Y)
         # Note: on limite self.vy pour ne pas traverser le sol du bas trop vite
         if self.rect.bottom > GameConfig.Y_PLATFORM:
             self.rect.bottom = GameConfig.Y_PLATFORM
             self.vy = 0
+        #Limitation aux bords de l'écran (Y)
+        if self.rect.top < 0:
+            self.rect.top = 0
+            self.vy = GameConfig.GRAVITY * GameConfig.DT
 
     def on_ground(self):
         return self.rect.bottom >= GameConfig.Y_PLATFORM
