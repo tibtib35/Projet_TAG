@@ -1,3 +1,4 @@
+from matplotlib import text
 import pygame
 from game_config import GameConfig
 from game_state import GameState
@@ -38,11 +39,23 @@ def game_loop(surface):
     quitting = False
     game_state = GameState()
     clock = pygame.time.Clock()
-    
+
+    timmer = pygame.time.Clock() #decompte de fin de partie
+    counter, text = 10, '10'.rjust(3)
+    pygame.time.set_timer(pygame.USEREVENT, 1000)
+    font = pygame.font.SysFont('Consolas', 30)
+
     while not quitting:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quitting = True
+            if event.type == pygame.USEREVENT:
+                if not counter <= 0:
+                    counter -= 1
+                    text = str(counter).rjust(3)
+                else :
+                    quitting = False
+            
         
         # On récupère la liste des mouvements pour tous les joueurs
         all_moves = get_next_moves(len(game_state.player))
@@ -54,6 +67,15 @@ def game_loop(surface):
         
         # Affichage
         game_state.draw(surface)
+        
+        # 4. Rafraîchissement
+
+        #Affichage du timer
+        timer_surface = font.render(text, True, (0, 0, 0))
+        timer_rect = timer_surface.get_rect(midtop=(GameConfig.WINDOWW // 2, 20))
+        window.blit(timer_surface, timer_rect)
+
+
         pygame.display.update()
         clock.tick(60)
 
