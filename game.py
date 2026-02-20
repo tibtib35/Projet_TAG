@@ -60,10 +60,7 @@ def game_loop(surface):
         # On récupère la liste des mouvements pour tous les joueurs
         all_moves = get_next_moves(len(game_state.player))
         
-        # On fait avancer chaque joueur avec son propre mouvement
-        for i in range(len(game_state.player)):
-            # On passe l'obstacle pour la gestion des collisions
-            game_state.player[i].advance_state(all_moves[i], game_state.obstacle)
+        game_state.advance_state(all_moves)
         
         # Affichage
         game_state.draw(surface)

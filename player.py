@@ -10,15 +10,20 @@ class Player(pygame.sprite.Sprite):
         self.last_jump_time = 0
         self.rect = pygame.Rect(x, GameConfig.Y_PLATFORM - GameConfig.PLAYER_H, self.hitbox_width, GameConfig.PLAYER_H)
         self.image = GameConfig.STANDING_IMG
+        self.is_it = False
+        self.last_tagged_time = 0
         
 
     def draw(self, window):
         offset_x = (GameConfig.PLAYER_W - self.hitbox_width) // 2
+        if self.is_it:
+            pygame.draw.rect(window, (255, 0, 0), self.rect.inflate(10, 10), 3)
         window.blit(self.image, (self.rect.x - offset_x, self.rect.y))
+        
 
     # On ajoute l'argument 'obstacle'
     def advance_state(self, next_move, obstacle):
-        # --- 1. Calcul des forces (inchangé) ---
+        # --- 1. Calcul des forces ---
         fx = 0
         fy = 0
         if next_move.left:
@@ -88,6 +93,8 @@ class Player(pygame.sprite.Sprite):
         if self.rect.top < 0:
             self.rect.top = 0
             self.vy = GameConfig.GRAVITY * GameConfig.DT
+
+        
 
     def on_ground(self):
         return self.rect.bottom >= GameConfig.Y_PLATFORM
