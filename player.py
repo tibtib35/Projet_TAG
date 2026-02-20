@@ -7,6 +7,7 @@ class Player(pygame.sprite.Sprite):
         self.vy = 0
         pygame.sprite.Sprite.__init__(self)
         self.hitbox_width = 32
+        self.last_jump_time = 0
         self.rect = pygame.Rect(x, GameConfig.Y_PLATFORM - GameConfig.PLAYER_H, self.hitbox_width, GameConfig.PLAYER_H)
         self.image = GameConfig.STANDING_IMG
         
@@ -26,17 +27,24 @@ class Player(pygame.sprite.Sprite):
             fx = GameConfig.FORCE_RIGHT
         
         self.vx = fx * GameConfig.DT
+
+        current_time = pygame.time.get_ticks()
         
         if next_move.jump:
-            fy = GameConfig.FORCE_JUMP
+            if (self.on_ground() or self.on_obstacle(obstacle)) and (current_time - self.last_jump_time > GameConfig.JUMP_DELAY):
+                fy = GameConfig.FORCE_JUMP
+                self.last_jump_time = current_time # On met à jour l'instant du saut
+                self.vy = fy * GameConfig.DT
 
         # Gravité et saut
         # On peut sauter si on est au sol OU si on est sur l'obstacle
-        if self.on_ground() or self.on_obstacle(obstacle):
-            self.vy = fy * GameConfig.DT
-        else:
-            self.vy = self.vy + GameConfig.GRAVITY * GameConfig.DT
-
+        if not (next_move.jump and current_time == self.last_jump_time):
+            if not (self.on_ground() or self.on_obstacle(obstacle)):
+                self.vy = self.vy + GameConfig.GRAVITY * GameConfig.DT
+            else:
+                # Si on touche le sol sans sauter, on s'assure que vy est nul
+                if not next_move.jump:
+                    self.vy = 0
         # --- 2. Application du mouvement HORIZONTAL (X) ---
         # On bouge uniquement en X d'abord
         dx = self.vx * GameConfig.DT
@@ -56,6 +64,10 @@ class Player(pygame.sprite.Sprite):
             self.rect.x = 0
         elif self.rect.x > GameConfig.WINDOWW - self.rect.width: 
             self.rect.x = GameConfig.WINDOWW - self.rect.width
+        if self.rect.y < 0:
+            self.rect.y = 0
+        elif self.rect.y > GameConfig.WINDOWH - self.rect.height:
+            self.rect.y = GameConfig.WINDOWH - self.rect.height
         # --- 3. Application du mouvement VERTICAL (Y) ---
         # On bouge ensuite en Y
         dy = self.vy * GameConfig.DT

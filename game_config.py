@@ -10,8 +10,9 @@ class GameConfig:
     DT = 0.5
     FORCE_LEFT = -20
     FORCE_RIGHT = -FORCE_LEFT
-    GRAVITY = 9.81
-    FORCE_JUMP = -100
+    GRAVITY = 4
+    FORCE_JUMP = -90
+    JUMP_DELAY = 150 # ms
 
 
 
