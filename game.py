@@ -1,3 +1,4 @@
+from matplotlib import text
 import pygame
 from game_config import GameConfig
 from game_state import GameState
@@ -18,12 +19,24 @@ def game_loop(surface):
     quitting = False
     game_state = GameState()
     clock = pygame.time.Clock()
-    
+
+    timmer = pygame.time.Clock() #decompte de fin de partie
+    counter, text = 10, '10'.rjust(3)
+    pygame.time.set_timer(pygame.USEREVENT, 1000)
+    font = pygame.font.SysFont('Consolas', 30)
+
     while not quitting:
         # 1. Gestion des événements
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quitting = True
+            if event.type == pygame.USEREVENT:
+                if not counter <= 0:
+                    counter -= 1
+                    text = str(counter).rjust(3)
+                else :
+                    quitting = False
+            
         
         # 2. Calcul de la logique (Mouvement et Collisions)
         next_move = get_next_move()
@@ -33,6 +46,7 @@ def game_loop(surface):
         game_state.draw(surface)
         
         # 4. Rafraîchissement
+        window.blit(font.render(text, True, (0, 0, 0)), (32, 48))
         pygame.display.update()
         clock.tick(60)
 
