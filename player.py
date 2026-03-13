@@ -14,13 +14,13 @@ class Player(pygame.sprite.Sprite):
 
     def indicator_wolf(self, surface):
         # Paramètres du losange
-        largeur = 20
-        hauteur = 20
-        espacement = 5 # Distance entre le loup et le losange
+        largeur = 15
+        hauteur = 15
+        espacement = 3 # Distance entre le loup et le losange
         
         # Calcul du centre du losange (au-dessus de la tête du loup)
         cx = self.rect.centerx
-        cy = self.rect.top - espacement - (hauteur / 2)
+        cy = self.rect.top - espacement 
         
         # Définition des 4 points du losange
         points = [
