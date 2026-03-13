@@ -7,6 +7,7 @@ class Player(pygame.sprite.Sprite):
         self.vy = 0
         pygame.sprite.Sprite.__init__(self)
         self.hitbox_width = 32
+        self.last_jump_time = 0
         self.rect = pygame.Rect(x, GameConfig.Y_PLATFORM - GameConfig.PLAYER_H, self.hitbox_width, GameConfig.PLAYER_H)
         self.image = GameConfig.STANDING_IMG
         self.is_it = False
@@ -33,28 +34,6 @@ class Player(pygame.sprite.Sprite):
         # Dessin du polygone (Couleur Rouge pour le Loup)
         pygame.draw.polygon(surface, (0, 0, 0), points)
         
-        
-
-    def indicator_wolf(self, surface):
-        # Paramètres du losange
-        largeur = 15
-        hauteur = 15
-        espacement = 3 # Distance entre le loup et le losange
-        
-        # Calcul du centre du losange (au-dessus de la tête du loup)
-        cx = self.rect.centerx
-        cy = self.rect.top - espacement 
-        
-        # Définition des 4 points du losange
-        points = [
-            (cx, cy - hauteur / 2), # Haut
-            (cx + largeur / 2, cy), # Droite
-            (cx, cy + hauteur / 2), # Bas
-            (cx - largeur / 2, cy)  # Gauche
-        ]
-        
-        # Dessin du polygone (Couleur Rouge pour le Loup)
-        pygame.draw.polygon(surface, (255, 0, 0), points)
     
 
     def draw(self, window):
