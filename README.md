@@ -13,10 +13,10 @@ Notre super projet d'ouv info
 - [X] Coder la logique de transfert du Loup par collision **Thibault**
 - [X] Créer le timer d'invincibilité de 3s après avoir été loup (anti-re-tag) **Thibault**
 - [X] Créer le Timer de partie (compte à rebours au centre haut) **AxelM**
-- [ ] Dessiner l'indicateur "Losange" qui suit le loup au-dessus de sa tête **AxelC**
+- [X] Dessiner l'indicateur "Losange" qui suit le loup au-dessus de sa tête **AxelC**
 
 ## 🟨 Version 2.0 : Visuels & Caméra
-- [ ] Coder l'algorithme du Zoom Barycentrique (Calcul des limites des 3 joueurs) **Thibault et AxelM**
+- [ ] Coder l'algorithme du Zoom Barycentrique (Calcul des limites des 3 joueurs) **Thibault**
 - [ ] Créer l'écran de Menu (Boutons : Start, Paramètres, Quitter) **AxelM**
 - [ ] Créer le menu de changement de touches (Key-rebinding) **AxelM**
 - [ ] Réaliser les sprites d'animation simples (Idle, Run, Jump) pour les persos **AxelC**
