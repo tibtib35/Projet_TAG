@@ -1,5 +1,9 @@
 # Projet_TAG
 Notre super projet d'ouv info
+## Participant
+- Thibault HUET
+- Axel CHEVALLIER
+- Axel MARIE
 
 # Road Map
 
