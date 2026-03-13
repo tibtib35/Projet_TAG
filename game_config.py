@@ -13,6 +13,7 @@ class GameConfig:
     GRAVITY = 4
     FORCE_JUMP = -67
     JUMP_DELAY = 150 # ms
+    IMUNITY_TIME = 3000 # ms
 
 
 

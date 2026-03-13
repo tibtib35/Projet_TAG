@@ -9,6 +9,8 @@ class Player(pygame.sprite.Sprite):
         self.hitbox_width = 32
         self.rect = pygame.Rect(x, GameConfig.Y_PLATFORM - GameConfig.PLAYER_H, self.hitbox_width, GameConfig.PLAYER_H)
         self.image = GameConfig.STANDING_IMG
+        self.is_it = False
+        self.last_tagged_time = 0
         
         
 
@@ -36,12 +38,13 @@ class Player(pygame.sprite.Sprite):
 
     def draw(self, window):
         offset_x = (GameConfig.PLAYER_W - self.hitbox_width) // 2
+        if self.is_it:
+            self.indicator_wolf(window)
         window.blit(self.image, (self.rect.x - offset_x, self.rect.y))
-        self.indicator_wolf(window)
 
     # On ajoute l'argument 'obstacle'
     def advance_state(self, next_move, obstacle):
-        # --- 1. Calcul des forces (inchangé) ---
+        # --- 1. Calcul des forces ---
         fx = 0
         fy = 0
         if next_move.left:
@@ -101,6 +104,8 @@ class Player(pygame.sprite.Sprite):
             self.rect.bottom = GameConfig.Y_PLATFORM
             self.vy = 0
 
+        
+
     def on_ground(self):
         return self.rect.bottom >= GameConfig.Y_PLATFORM
 
@@ -112,5 +117,4 @@ class Player(pygame.sprite.Sprite):
         for obs in obstacle:
             if test_rect.colliderect(obs):
                 return True
-        return False
-    
+        return False   
