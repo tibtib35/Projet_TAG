@@ -1,4 +1,4 @@
-import pygame
+import pygame 
 from game_config import GameConfig
 
 class Player(pygame.sprite.Sprite):
