@@ -7,7 +7,6 @@ class Player(pygame.sprite.Sprite):
         self.vy = 0
         pygame.sprite.Sprite.__init__(self)
         self.hitbox_width = 32
-        self.last_jump_time = 0
         self.rect = pygame.Rect(x, GameConfig.Y_PLATFORM - GameConfig.PLAYER_H, self.hitbox_width, GameConfig.PLAYER_H)
         self.image = GameConfig.STANDING_IMG
         self.is_it = False
@@ -34,13 +33,35 @@ class Player(pygame.sprite.Sprite):
         # Dessin du polygone (Couleur Rouge pour le Loup)
         pygame.draw.polygon(surface, (0, 0, 0), points)
         
+        
+
+    def indicator_wolf(self, surface):
+        # Paramètres du losange
+        largeur = 15
+        hauteur = 15
+        espacement = 3 # Distance entre le loup et le losange
+        
+        # Calcul du centre du losange (au-dessus de la tête du loup)
+        cx = self.rect.centerx
+        cy = self.rect.top - espacement 
+        
+        # Définition des 4 points du losange
+        points = [
+            (cx, cy - hauteur / 2), # Haut
+            (cx + largeur / 2, cy), # Droite
+            (cx, cy + hauteur / 2), # Bas
+            (cx - largeur / 2, cy)  # Gauche
+        ]
+        
+        # Dessin du polygone (Couleur Rouge pour le Loup)
+        pygame.draw.polygon(surface, (255, 0, 0), points)
+    
 
     def draw(self, window):
         offset_x = (GameConfig.PLAYER_W - self.hitbox_width) // 2
         if self.is_it:
             self.indicator_wolf(window)
         window.blit(self.image, (self.rect.x - offset_x, self.rect.y))
-        
 
     # On ajoute l'argument 'obstacle'
     def advance_state(self, next_move, obstacle):
@@ -53,24 +74,17 @@ class Player(pygame.sprite.Sprite):
             fx = GameConfig.FORCE_RIGHT
         
         self.vx = fx * GameConfig.DT
-
-        current_time = pygame.time.get_ticks()
         
         if next_move.jump:
-            if (self.on_ground() or self.on_obstacle(obstacle)) and (current_time - self.last_jump_time > GameConfig.JUMP_DELAY):
-                fy = GameConfig.FORCE_JUMP
-                self.last_jump_time = current_time # On met à jour l'instant du saut
-                self.vy = fy * GameConfig.DT
+            fy = GameConfig.FORCE_JUMP
 
         # Gravité et saut
         # On peut sauter si on est au sol OU si on est sur l'obstacle
-        if not (next_move.jump and current_time == self.last_jump_time):
-            if not (self.on_ground() or self.on_obstacle(obstacle)):
-                self.vy = self.vy + GameConfig.GRAVITY * GameConfig.DT
-            else:
-                # Si on touche le sol sans sauter, on s'assure que vy est nul
-                if not next_move.jump:
-                    self.vy = 0
+        if self.on_ground() or self.on_obstacle(obstacle):
+            self.vy = fy * GameConfig.DT
+        else:
+            self.vy = self.vy + GameConfig.GRAVITY * GameConfig.DT
+
         # --- 2. Application du mouvement HORIZONTAL (X) ---
         # On bouge uniquement en X d'abord
         dx = self.vx * GameConfig.DT
@@ -103,17 +117,13 @@ class Player(pygame.sprite.Sprite):
                     self.vy = 0 
                 elif dy < 0: # On sautait vers le haut (tête cogne)
                     self.rect.top = obs.bottom # On tape le dessous
-                    self.vy = GameConfig.GRAVITY * GameConfig.DT
+                self.vy = 0
 
         # Limitation au sol global (Y)
         # Note: on limite self.vy pour ne pas traverser le sol du bas trop vite
         if self.rect.bottom > GameConfig.Y_PLATFORM:
             self.rect.bottom = GameConfig.Y_PLATFORM
             self.vy = 0
-        #Limitation aux bords de l'écran (Y)
-        if self.rect.top < 0:
-            self.rect.top = 0
-            self.vy = GameConfig.GRAVITY * GameConfig.DT
 
         
 
@@ -128,4 +138,4 @@ class Player(pygame.sprite.Sprite):
         for obs in obstacle:
             if test_rect.colliderect(obs):
                 return True
-        return False
+        return False   
