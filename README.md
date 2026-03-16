@@ -20,8 +20,8 @@ Notre super projet d'ouv info
 - [X] Dessiner l'indicateur "Losange" qui suit le loup au-dessus de sa tête **AxelC**
 
 ## 🟨 Version 2.0 : Visuels & Caméra
-- [ ] Coder l'algorithme du Zoom Barycentrique (Calcul des limites des 3 joueurs) **Thibault**
-- [ ] Créer l'écran de Menu (Boutons : Start, Paramètres, Quitter) **AxelM**
+- [X] Coder l'algorithme du Zoom Barycentrique (Calcul des limites des 3 joueurs) **AxelM**
+- [-] Créer l'écran de Menu (Boutons : Start, Paramètres, Quitter) **AxelM**
 - [ ] Créer le menu de changement de touches (Key-rebinding) **AxelM**
 - [ ] Réaliser les sprites d'animation simples (Idle, Run, Jump) pour les persos **AxelC**
 
