@@ -59,6 +59,9 @@ def menu_loop(surface):
     
         # Dessin du menu
         surface.fill((50, 50, 50)) # Fond gris foncé
+        surface.blit(GameConfig.STANDING_IMG, (0, 0)) 
+
+
             
         # Titre
         titre_surf = font_titre.render("LOUP-TOUCHE", True, (255, 215, 0)) # Or
@@ -72,7 +75,7 @@ def menu_loop(surface):
         txt_2_players = font_nb_players.render("1 PLAYER", True, (255, 255, 255))
         txt_3_players = font_nb_players.render("2 PLAYERS", True, (255, 255, 255))
         surface.blit(txt_jouer, (button_rect.centerx - txt_jouer.get_width()//2, button_rect.centery - txt_jouer.get_height()//2))
-        surface.blit(txt_2_players, (GameConfig.WINDOWW//4, button_rect.bottom + 35))
+        surface.blit(txt_2_players, (GameConfig.WINDOWW//4 - txt_2_players.get_width()//2, button_rect.bottom + 35))
         surface.blit(txt_3_players, (3*GameConfig.WINDOWW//4, button_rect.bottom +35))
     
             
