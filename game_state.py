@@ -164,6 +164,11 @@ class GameState:
             self.camera_actuelle.center = (int(nouveau_cx), int(nouveau_cy))
 
         rect_de_la_carte = self.canvas.get_rect()
+
+        # Sécurité: subsurface exige un rectangle entièrement contenu
+        # dans la surface source (même taille incluse).
+        self.camera_actuelle.width = max(1, min(self.camera_actuelle.width, rect_de_la_carte.width))
+        self.camera_actuelle.height = max(1, min(self.camera_actuelle.height, rect_de_la_carte.height))
         self.camera_actuelle.clamp_ip(rect_de_la_carte)
 
         
