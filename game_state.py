@@ -10,7 +10,7 @@ class GameState:
         self._scaled_background_size = None
 
         try:
-            self.tiled_map = TiledMap("Ressources\\carte_TAG.tmx")
+            self.tiled_map = TiledMap("Ressources\\carte1_TAG.tmx")
             GameConfig.WINDOWW = self.tiled_map.width
             GameConfig.WINDOWH = self.tiled_map.height
             GameConfig.Y_PLATFORM = self.tiled_map.height
