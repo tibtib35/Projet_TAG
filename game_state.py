@@ -12,8 +12,6 @@ class GameState:
 
         try:
             self.tiled_map = TiledMap("Ressources\\carte1_TAG.tmx")
-            GameConfig.WINDOWW = self.tiled_map.width
-            GameConfig.WINDOWH = self.tiled_map.height
             GameConfig.Y_PLATFORM = self.tiled_map.height
         except Exception:
             self.tiled_map = None
@@ -175,11 +173,20 @@ class GameState:
         #On découpe la zone du canvas avec notre caméra 
         vue_camera = self.canvas.subsurface(self.camera_actuelle)
         
-        #On redimensionne cette petite vue pour qu'elle remplisse l'écran entier
-        vue_finale = pygame.transform.smoothscale(vue_camera, (GameConfig.WINDOWW, GameConfig.WINDOWH))
+        # On redimensionne sans déformer l'image (letterbox/pillarbox si besoin)
+        src_w, src_h = vue_camera.get_size()
+        dst_w, dst_h = window.get_size()
         
-        #On affiche 
-        window.blit(vue_finale, (0, 0))
+        scale = min(dst_w / src_w, dst_h / src_h)
+        render_w = max(1, int(src_w * scale))
+        render_h = max(1, int(src_h * scale))
+        
+        vue_finale = pygame.transform.smoothscale(vue_camera, (render_w, render_h))
+        
+        offset_x = (dst_w - render_w) // 2
+        offset_y = (dst_h - render_h) // 2
+        window.fill((0, 0, 0))
+        window.blit(vue_finale, (offset_x, offset_y))
 
     def advance_state(self, all_moves):
         for i, p in enumerate(self.player):

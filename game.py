@@ -3,6 +3,12 @@ from game_config import GameConfig
 from game_state import GameState
 from move import Move
 
+
+def update_window_size(width, height):
+    GameConfig.WINDOWW = max(960, int(width))
+    GameConfig.WINDOWH = max(540, int(height))
+    return pygame.display.set_mode((GameConfig.WINDOWW, GameConfig.WINDOWH), pygame.RESIZABLE)
+
 def get_next_moves(player_count):
     # On crée une liste d'objets Move, un pour chaque joueur
     moves = [Move() for _ in range(player_count)]
@@ -41,17 +47,18 @@ def menu_loop(surface):
     font_button = pygame.font.SysFont('Consolas', 40)
     font_nb_players = pygame.font.SysFont('Consolas', 30)
     
-    # Création du bouton "JOUER"
-    button_rect = pygame.Rect(0, 0, 250, 80)
-    button_rect.center = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2 + 50)
-    
     waiting = True
     while waiting:
+        # Création du bouton "JOUER" (recalculé pour suivre la taille de la fenêtre)
+        button_rect = pygame.Rect(0, 0, 250, 80)
+        button_rect.center = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2 + 50)
         mouse_pos = pygame.mouse.get_pos()
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "QUIT"
+            if event.type == pygame.VIDEORESIZE:
+                surface = update_window_size(event.w, event.h)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_rect.collidepoint(mouse_pos):
                     return "PLAY" # On sort du menu pour jouer
@@ -93,6 +100,8 @@ def game_loop(surface):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quitting = True
+            if event.type == pygame.VIDEORESIZE:
+                surface = update_window_size(event.w, event.h)
             if event.type == pygame.USEREVENT:
                 if not counter <= 0:
                     counter -= 1
@@ -127,7 +136,12 @@ def game_loop(surface):
 if __name__ == "__main__":
     pygame.init()
     GameConfig.init()
-    window = pygame.display.set_mode(size=(GameConfig.WINDOWW, GameConfig.WINDOWH))
+
+    info = pygame.display.Info()
+    initial_w = int(info.current_w * 0.9)
+    initial_h = int(info.current_h * 0.9)
+    window = update_window_size(initial_w, initial_h)
+
     pygame.display.set_caption("TAG")
     
     choix = menu_loop(window)
