@@ -37,15 +37,22 @@ def get_next_moves(player_count):
 
 
 
-def menu_loop(surface):
+def selected_player(surface) : 
+
+
+    #  Séléction des polices et de la taille des textes
     font_titre = pygame.font.SysFont('Consolas', 80, bold=True)
-    font_button = pygame.font.SysFont('Consolas', 40)
-    font_nb_players = pygame.font.SysFont('Consolas', 30)
+    font_nb_players = pygame.font.SysFont('Consolas', 50)   
     
-    # Création du bouton "JOUER"
-    button_rect = pygame.Rect(0, 0, 250, 80)
-    button_rect.center = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2 + 50)
+
+    # Création du rectangle pour le bouton 2 PLAYERS
+    button_2p = pygame.Rect(0, 0, 250, 80)
+    button_2p.center = (GameConfig.WINDOWW //4, GameConfig.WINDOWH // 2 + 50)
     
+    # Création des rectangles pour la surbrillance des textes
+    button_3p = pygame.Rect(0, 0, 250, 80)
+    button_3p.center = (3 * GameConfig.WINDOWW // 4, GameConfig.WINDOWH // 2 + 50)
+
     waiting = True
     while waiting:
         mouse_pos = pygame.mouse.get_pos()
@@ -54,32 +61,29 @@ def menu_loop(surface):
             if event.type == pygame.QUIT:
                 return "QUIT"
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if button_rect.collidepoint(mouse_pos):
-                    return "PLAY" # On sort du menu pour jouer
+                if button_3p.collidepoint(mouse_pos) or button_2p.collidepoint(mouse_pos):
+                    return "PLAY" 
     
-        # Dessin du menu
-        surface.fill((50, 50, 50)) # Fond gris foncé
+
         surface.blit(GameConfig.STANDING_IMG, (0, 0)) 
 
+        # Affichage du titre
+        titre_surface = font_titre.render("LOUP-TOUCHE", True, (255, 215, 0))
+        surface.blit(titre_surface, (GameConfig.WINDOWW//2 - titre_surface.get_width()//2, 150))
+            
+        # Affichage du bouton 2 PLAYERS avec potentielle surbrillance
+        couleur_2p = (100, 255, 100) if button_2p.collidepoint(mouse_pos) else (255, 255, 255)
+        txt_2_players = font_nb_players.render("2 PLAYERS", True, couleur_2p)
+        surface.blit(txt_2_players, button_2p.topleft)
 
-            
-        # Titre
-        titre_surf = font_titre.render("LOUP-TOUCHE", True, (255, 215, 0)) # Or
-        surface.blit(titre_surf, (GameConfig.WINDOWW//2 - titre_surf.get_width()//2, 150))
-            
-        # Bouton avec effet de survol (hover)
-        couleur_bouton = (100, 255, 100) if button_rect.collidepoint(mouse_pos) else (0, 200, 0)
-        pygame.draw.rect(surface, couleur_bouton, button_rect, border_radius=10)
-        
-        txt_jouer = font_button.render("START", True, (255, 255, 255))
-        txt_2_players = font_nb_players.render("1 PLAYER", True, (255, 255, 255))
-        txt_3_players = font_nb_players.render("2 PLAYERS", True, (255, 255, 255))
-        surface.blit(txt_jouer, (button_rect.centerx - txt_jouer.get_width()//2, button_rect.centery - txt_jouer.get_height()//2))
-        surface.blit(txt_2_players, (GameConfig.WINDOWW//4 - txt_2_players.get_width()//2, button_rect.bottom + 35))
-        surface.blit(txt_3_players, (3*GameConfig.WINDOWW//4, button_rect.bottom +35))
-    
-            
+        # Affichage du bouton 3 PLAYERS avec potentielle surbrillance
+        couleur_3p = (100, 255, 100) if button_3p.collidepoint(mouse_pos) else (255, 255, 255)
+        txt_3_players = font_nb_players.render("3 PLAYERS", True, couleur_3p)
+        surface.blit(txt_3_players, button_3p.topleft)
+
         pygame.display.update()
+
+
 
 
 
@@ -134,7 +138,7 @@ if __name__ == "__main__":
     window = pygame.display.set_mode(size=(GameConfig.WINDOWW, GameConfig.WINDOWH))
     pygame.display.set_caption("TAG")
     
-    choix = menu_loop(window)
+    choix = selected_player(window)
     
     if choix == "PLAY":
         game_loop(window)
