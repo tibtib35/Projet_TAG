@@ -109,6 +109,7 @@ def game_loop(surface):
         # Affichage
         game_state.draw(surface)
         
+        
         # 4. Rafraîchissement
 
         #Affichage du timer
