@@ -22,5 +22,5 @@ class GameConfig:
 
 
     def init():
-        GameConfig.BACKGROUND_IMG = pygame.image.load("Ressources\\background.png")
+        GameConfig.BACKGROUND_IMG = pygame.image.load("Ressources\\background.jpg")
         GameConfig.STANDING_IMG = pygame.image.load("Ressources\\standing.png")
