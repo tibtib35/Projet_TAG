@@ -1,8 +1,13 @@
-from matplotlib import text
 import pygame
 from game_config import GameConfig
 from game_state import GameState
 from move import Move
+
+
+def update_window_size(width, height):
+    GameConfig.WINDOWW = max(960, int(width))
+    GameConfig.WINDOWH = max(540, int(height))
+    return pygame.display.set_mode((GameConfig.WINDOWW, GameConfig.WINDOWH), pygame.RESIZABLE)
 
 def get_next_moves(player_count):
     # On crée une liste d'objets Move, un pour chaque joueur
@@ -55,11 +60,16 @@ def selected_player(surface) :
 
     waiting = True
     while waiting:
+        # Création du bouton "JOUER" (recalculé pour suivre la taille de la fenêtre)
+        button_rect = pygame.Rect(0, 0, 250, 80)
+        button_rect.center = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2 + 50)
         mouse_pos = pygame.mouse.get_pos()
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "QUIT"
+            if event.type == pygame.VIDEORESIZE:
+                surface = update_window_size(event.w, event.h)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_3p.collidepoint(mouse_pos) or button_2p.collidepoint(mouse_pos):
                     return "PLAY" 
@@ -93,7 +103,6 @@ def game_loop(surface):
     game_state = GameState()
     clock = pygame.time.Clock()
 
-    timmer = pygame.time.Clock() #decompte de fin de partie
     counter, text = 10, '10'.rjust(3)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     font = pygame.font.SysFont('Consolas', 30)
@@ -102,6 +111,8 @@ def game_loop(surface):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quitting = True
+            if event.type == pygame.VIDEORESIZE:
+                surface = update_window_size(event.w, event.h)
             if event.type == pygame.USEREVENT:
                 if not counter <= 0:
                     counter -= 1
@@ -118,12 +129,13 @@ def game_loop(surface):
         # Affichage
         game_state.draw(surface)
         
+        
         # 4. Rafraîchissement
 
         #Affichage du timer
         timer_surface = font.render(text, True, (0, 0, 0))
         timer_rect = timer_surface.get_rect(midtop=(GameConfig.WINDOWW // 2, 20))
-        window.blit(timer_surface, timer_rect)
+        surface.blit(timer_surface, timer_rect)
 
 
         pygame.display.update()
@@ -135,7 +147,12 @@ def game_loop(surface):
 if __name__ == "__main__":
     pygame.init()
     GameConfig.init()
-    window = pygame.display.set_mode(size=(GameConfig.WINDOWW, GameConfig.WINDOWH))
+
+    info = pygame.display.Info()
+    initial_w = int(info.current_w * 0.9)
+    initial_h = int(info.current_h * 0.9)
+    window = update_window_size(initial_w, initial_h)
+
     pygame.display.set_caption("TAG")
     
     choix = selected_player(window)
