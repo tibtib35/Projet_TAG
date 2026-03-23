@@ -27,9 +27,11 @@ Notre super projet d'ouv info
 
 ## 🟧 Version 3.0 : Bonus & Événements
 - [ ] Créer le système de Bonus (Spawn aléatoire, boosts de vitesse/saut) **Thibault**
-- [ ] Coder l'écran de fin de partie avec le pseudo du perdant **AxelM**
-- [ ] Implémenter le "Happening" (Plateforme qui prévient 5s avant de disparaître) **AxelC**
+- [X] Coder l'écran de fin de partie avec le pseudo du perdant **AxelM**
 - [ ] Intégrer les animations de Joueur C dans le code de Joueur A **AxelC**
+
+
+**on peut sortir sur les bords à corriger**
 
 
 
