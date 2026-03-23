@@ -242,10 +242,15 @@ if __name__ == "__main__":
     pygame.display.set_caption("TAG")
     
     choix = selected_player(window)
-    
-    if choix == "PLAY":
-        choix = menu_loop(window)
-        if choix == "PLAY":
-            game_loop(window)
-        
+    pygame.event.clear()
+    # Boucle principale : on rejoue tant que le joueur le veut
+    while choix == "PLAY":
+        # On lance la partie et on récupère l'index du perdant
+        index_perdant = game_loop(window)
+        # On affiche l'écran de fin avec le nom du perdant
+        choix = end_screen(window, index_perdant)
+        # Si le joueur veut rejouer, on retourne au menu de sélection
+        if choix == "REPLAY":
+            choix = selected_player(window)
+
     pygame.quit()

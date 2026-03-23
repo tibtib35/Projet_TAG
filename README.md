@@ -23,7 +23,7 @@ Notre super projet d'ouv info
 - [X] Coder l'algorithme du Zoom Barycentrique (Calcul des limites des 3 joueurs) **AxelM**
 - [-] Créer l'écran de Menu (Boutons : Start, Paramètres, Quitter) **AxelM**
 - [ ] Créer le menu de changement de touches (Key-rebinding) **AxelC**
-- [ ] Réaliser les sprites d'animation simples (Idle, Run, Jump) pour les persos **Thibault**
+- [X] Réaliser les sprites d'animation simples (Idle, Run, Jump) pour les persos **Thibault**
 
 ## 🟧 Version 3.0 : Bonus & Événements
 - [ ] Créer le système de Bonus (Spawn aléatoire, boosts de vitesse/saut) **Thibault**

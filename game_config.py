@@ -18,10 +18,10 @@ class GameConfig:
     GRAVITY = 3
     FORCE_JUMP = -60
     JUMP_DELAY = 150 # ms
-    IMUNITY_TIME = 3000 # ms
+    IMUNITY_TIME = 1500 # ms
     PADDING = 150
     MIN_ZOOM_W = 900       
-    CAMERA_SPEED = 0.01     # 5% de déplacement vers la cible à chaque frame (plus c'est petit, plus c'est fluide)
+    CAMERA_SPEED = 0.05     # 5% de déplacement vers la cible à chaque frame (plus c'est petit, plus c'est fluide)
 
 
 
