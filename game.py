@@ -216,3 +216,5 @@ if __name__ == "__main__":
             choix = selected_player(window)
 
     pygame.quit()
+
+    "batard"
