@@ -72,7 +72,7 @@ def selected_player(surface) :
                 surface = update_window_size(event.w, event.h)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_3p.collidepoint(mouse_pos) or button_2p.collidepoint(mouse_pos):
-                    return "PLAY" 
+                    return "SELECT" 
     
 
         surface.blit(GameConfig.STANDING_IMG, (0, 0)) 
@@ -94,6 +94,35 @@ def selected_player(surface) :
         pygame.display.update()
 
 
+
+def menu_loop(screen):
+    font_button = pygame.font.SysFont('Consolas', 60, bold=True)
+    
+    # Un seul gros bouton PLAY au centre
+    play_rect = pygame.Rect(0, 0, 300, 100)
+    play_rect.center = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2)
+
+    while True:
+        mouse = pygame.mouse.get_pos()
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT: return "QUIT"
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if play_rect.collidepoint(event.pos):
+                    return "GO" # Signal pour lancer le jeu
+
+        # DESSIN : Le secret est là ! 
+        # On redessine le fond SANS dessiner le titre ni les boutons 2p/3p
+        screen.blit(GameConfig.STANDING_IMG, (0, 0))
+        
+        # On dessine uniquement le bouton PLAY
+        color = (0, 255, 0) if play_rect.collidepoint(mouse) else (0, 200, 0)
+        pygame.draw.rect(screen, color, play_rect, border_radius=15)
+        
+        txt = font_button.render("PLAY", True, (255, 255, 255))
+        screen.blit(txt, (play_rect.centerx - txt.get_width()//2, play_rect.centery - txt.get_height()//2))
+
+        pygame.display.update()
 
 
 
@@ -155,9 +184,14 @@ if __name__ == "__main__":
 
     pygame.display.set_caption("TAG")
     
-    choix = selected_player(window)
+    nb_joueurs = selected_player(window)
     
-    if choix == "PLAY":
-        game_loop(window)
+    if nb_joueurs != "QUIT":
+        # 2. La sélection est finie. On lance la scène du bouton PLAY
+        confirmation = menu_loop(window)
         
+        if confirmation == "GO":
+            # 3. Tout est prêt, on lance la boucle de jeu
+            game_loop(window, nb_joueurs)
+
     pygame.quit()
