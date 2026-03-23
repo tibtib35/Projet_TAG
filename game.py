@@ -56,7 +56,7 @@ def selected_player(surface):
     # On force un premier affichage propre avant d'entrer dans la boucle
     surface.fill((0, 0, 0))
     pygame.display.update()
-    
+
     while waiting:
         button_rect = pygame.Rect(0, 0, 250, 80)
         button_rect.center = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2 + 50)
@@ -95,7 +95,7 @@ def game_loop(surface):
     game_state = GameState()
     clock = pygame.time.Clock()
 
-    counter, text = 10, '10'.rjust(3)
+    counter, text = 30, '30'.rjust(3)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     font = pygame.font.SysFont('Consolas', 30)
 

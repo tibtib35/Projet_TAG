@@ -78,11 +78,10 @@ class Player(pygame.sprite.Sprite):
                     self.rect.left = obs.right # On se colle au bord droit du mur
                 self.vx = 0
 
-        # Limitation aux bords de l'écran (X)
-        if self.rect.x < 0: 
+        if self.rect.x < 0:
             self.rect.x = 0
-        elif self.rect.x > GameConfig.WINDOWW - self.rect.width: 
-            self.rect.x = GameConfig.WINDOWW - self.rect.width
+        elif self.rect.x > GameConfig.MAP_W - self.rect.width:
+            self.rect.x = GameConfig.MAP_W - self.rect.width
         # --- 3. Application du mouvement VERTICAL (Y) ---
         # On bouge ensuite en Y
         dy = self.vy * GameConfig.DT
