@@ -37,6 +37,9 @@ class GameState:
         else:
             map_w = GameConfig.WINDOWW
             map_h = GameConfig.WINDOWH
+
+        GameConfig.MAP_W = map_w
+        GameConfig.MAP_H = map_h
             
         
         self.canvas = pygame.Surface((map_w, map_h))
