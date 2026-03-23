@@ -71,7 +71,7 @@ def selected_player(surface):
                 if button_3p.collidepoint(mouse_pos) or button_2p.collidepoint(mouse_pos):
                     return "PLAY"
 
-        surface.blit(GameConfig.STANDING_IMG, (0, 0))
+
 
         # Affichage du titre
         titre_surface = font_titre.render("LOUP-TOUCHE", True, (255, 215, 0))
