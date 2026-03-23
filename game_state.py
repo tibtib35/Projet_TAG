@@ -45,12 +45,12 @@ class GameState:
     def _create_players_from_spawns(self, spawn_points):
         players = []
         spawns = [f"spawn_j{i + 1}" for i in range(max(1, GameConfig.PLAYER_COUNT))]
-        for spawn_name in spawns:
+        for i, spawn_name in enumerate(spawns):
             if spawn_name not in spawn_points:
                 continue
 
             spawn_x, spawn_y = spawn_points[spawn_name]
-            p = Player(spawn_x)
+            p = Player(spawn_x, i)
             p.rect.x = spawn_x
             p.rect.y = max(0, spawn_y - GameConfig.PLAYER_H)
             players.append(p)
@@ -66,7 +66,7 @@ class GameState:
 
         for i in range(count):
             x = int((i + 1) * GameConfig.WINDOWW / (count + 1)) - (GameConfig.PLAYER_W // 2)
-            p = Player(x)
+            p = Player(x, i)
             players.append(p)
 
         return players
