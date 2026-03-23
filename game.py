@@ -69,8 +69,8 @@ def selected_player(surface):
                 surface = update_window_size(event.w, event.h)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_3p.collidepoint(mouse_pos) or button_2p.collidepoint(mouse_pos):
-                    return "PLAY"
-
+                    return "PLAY" 
+    
 
 
         # Affichage du titre
@@ -88,6 +88,45 @@ def selected_player(surface):
         surface.blit(txt_3_players, button_3p.topleft)
 
         pygame.display.update()
+
+
+def menu_loop(surface):
+    font_play = pygame.font.SysFont('Consolas', 50, bold=True)
+    button_play = pygame.Rect(0, 0, 250, 80)
+    button_play.center = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2)
+
+    while True:
+        # --- 1. NETTOYAGE --- 
+        # C'est cette ligne qui fait disparaître les boutons "2 joueurs"
+        surface.fill((0, 0, 0)) 
+        
+        # On essaie d'afficher le fond uniquement s'il n'y a pas d'erreur
+        try:
+            surface.blit(GameConfig.STANDING_IMG, (0, 0))
+        except AttributeError:
+            # Si l'image n'existe pas, on laisse le fond noir
+            pass
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return "QUIT"
+            if event.type == pygame.VIDEORESIZE:
+                surface = update_window_size(event.w, event.h)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button_play.collidepoint(event.pos):
+                    return "PLAY"
+
+        # --- 2. DESSIN DU BOUTON PLAY ---
+        mouse_pos = pygame.mouse.get_pos()
+        couleur = (100, 255, 100) if button_play.collidepoint(mouse_pos) else (255, 215, 0)
+        
+        play_surface = font_play.render("LANCER LE JEU", True, couleur)
+        surface.blit(play_surface, (button_play.centerx - play_surface.get_width()//2, 
+                                     button_play.centery - play_surface.get_height()//2))
+        
+        pygame.display.update()
+
+
 
 
 def game_loop(surface):
@@ -201,8 +240,7 @@ if __name__ == "__main__":
     window = update_window_size(initial_w, initial_h)
 
     pygame.display.set_caption("TAG")
-
-    # On lance le menu de sélection du nombre de joueurs
+    
     choix = selected_player(window)
     pygame.event.clear()
     # Boucle principale : on rejoue tant que le joueur le veut
@@ -216,5 +254,3 @@ if __name__ == "__main__":
             choix = selected_player(window)
 
     pygame.quit()
-
-    
