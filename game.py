@@ -54,7 +54,7 @@ def selected_player(surface) :
     button_2p = pygame.Rect(0, 0, 250, 80)
     button_2p.center = (GameConfig.WINDOWW //4, GameConfig.WINDOWH // 2 + 50)
     
-    # Création des rectangles pour la surbrillance des textes
+    # Création du rectangle pour le bouton 3 PLAYERS
     button_3p = pygame.Rect(0, 0, 250, 80)
     button_3p.center = (3 * GameConfig.WINDOWW // 4, GameConfig.WINDOWH // 2 + 50)
 
