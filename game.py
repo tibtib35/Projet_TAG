@@ -58,8 +58,8 @@ def selected_player(surface):
     pygame.display.update()
 
     while waiting:
-        button_rect = pygame.Rect(0, 0, 250, 80)
-        button_rect.center = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2 + 50)
+        button_2p.center = (GameConfig.WINDOWW // 4, GameConfig.WINDOWH // 2 + 50)
+        button_3p.center = (3 * GameConfig.WINDOWW // 4, GameConfig.WINDOWH // 2 + 50)
         mouse_pos = pygame.mouse.get_pos()
 
         for event in pygame.event.get():
@@ -68,8 +68,10 @@ def selected_player(surface):
             if event.type == pygame.VIDEORESIZE:
                 surface = update_window_size(event.w, event.h)
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if button_3p.collidepoint(mouse_pos) or button_2p.collidepoint(mouse_pos):
-                    return "SELECT" 
+                if button_2p.collidepoint(mouse_pos):
+                    return 2
+                if button_3p.collidepoint(mouse_pos):
+                    return 3
     
 
 
@@ -246,7 +248,8 @@ if __name__ == "__main__":
             break
 
         # 2. Si on a sélectionné, on va vers le bouton "Lancer le jeu"
-        if choix == "SELECT":
+        if choix in (2, 3):
+            GameConfig.PLAYER_COUNT = choix
             confirmation = menu_loop(window)
             
             if confirmation == "QUIT":
