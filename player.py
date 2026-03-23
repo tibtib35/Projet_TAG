@@ -2,37 +2,30 @@ import pygame
 from game_config import GameConfig
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x):
+    def __init__(self, x, player_index=0):
         self.vx = 0
         self.vy = 0
         pygame.sprite.Sprite.__init__(self)
         self.hitbox_width = 32
         self.last_jump_time = 0
         self.rect = pygame.Rect(x, GameConfig.Y_PLATFORM - GameConfig.PLAYER_H, self.hitbox_width, GameConfig.PLAYER_H)
-        self.image = GameConfig.STANDING_IMG
+        player_images = [GameConfig.PLAYER1_IMG, GameConfig.PLAYER2_IMG, GameConfig.PLAYER3_IMG]
+        self.image = player_images[player_index % len(player_images)]
         self.is_it = False
         self.last_tagged_time = 0
 
     def indicator_wolf(self, surface):
         # Paramètres du losange
-        largeur = 15
-        hauteur = 15
-        espacement = 3 # Distance entre le loup et le losange
+        diametre = 10
+        espacement = 15 # Distance entre le loup et le losange
         
         # Calcul du centre du losange (au-dessus de la tête du loup)
         cx = self.rect.centerx
         cy = self.rect.top - espacement 
-        
-        # Définition des 4 points du losange
-        points = [
-            (cx, cy - hauteur / 2), # Haut
-            (cx + largeur / 2, cy), # Droite
-            (cx, cy + hauteur / 2), # Bas
-            (cx - largeur / 2, cy)  # Gauche
-        ]
+
         
         # Dessin du polygone (Couleur Rouge pour le Loup)
-        pygame.draw.polygon(surface, (0, 0, 0), points)
+        pygame.draw.circle(surface, (0, 0, 0), (cx, cy), diametre // 2) # Cercle rouge au centre du losange
         
     
 
@@ -78,11 +71,10 @@ class Player(pygame.sprite.Sprite):
                     self.rect.left = obs.right # On se colle au bord droit du mur
                 self.vx = 0
 
-        # Limitation aux bords de l'écran (X)
-        if self.rect.x < 0: 
+        if self.rect.x < 0:
             self.rect.x = 0
-        elif self.rect.x > GameConfig.WINDOWW - self.rect.width: 
-            self.rect.x = GameConfig.WINDOWW - self.rect.width
+        elif self.rect.x > GameConfig.MAP_W - self.rect.width:
+            self.rect.x = GameConfig.MAP_W - self.rect.width
         # --- 3. Application du mouvement VERTICAL (Y) ---
         # On bouge ensuite en Y
         dy = self.vy * GameConfig.DT
