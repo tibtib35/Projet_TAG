@@ -90,6 +90,41 @@ def selected_player(surface):
         pygame.display.update()
 
 
+def menu_loop(surface):
+    font_play = pygame.font.SysFont('Consolas', 50, bold=True)
+    button_play = pygame.Rect(0, 0, 250, 80)
+    button_play.center = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2)
+
+    while True:
+        # --- 1. NETTOYAGE --- 
+        # C'est cette ligne qui fait disparaître les boutons "2 joueurs"
+        surface.fill((0, 0, 0)) 
+        
+        # On essaie d'afficher le fond uniquement s'il n'y a pas d'erreur
+        try:
+            surface.blit(GameConfig.STANDING_IMG, (0, 0))
+        except AttributeError:
+            # Si l'image n'existe pas, on laisse le fond noir
+            pass
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return "QUIT"
+            if event.type == pygame.VIDEORESIZE:
+                surface = update_window_size(event.w, event.h)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button_play.collidepoint(event.pos):
+                    return "PLAY"
+
+        # --- 2. DESSIN DU BOUTON PLAY ---
+        mouse_pos = pygame.mouse.get_pos()
+        couleur = (100, 255, 100) if button_play.collidepoint(mouse_pos) else (255, 215, 0)
+        
+        play_surface = font_play.render("LANCER LE JEU", True, couleur)
+        surface.blit(play_surface, (button_play.centerx - play_surface.get_width()//2, 
+                                     button_play.centery - play_surface.get_height()//2))
+        
+        pygame.display.update()
 
 
 
@@ -209,6 +244,8 @@ if __name__ == "__main__":
     choix = selected_player(window)
     
     if choix == "PLAY":
-        game_loop(window)
+        choix = menu_loop(window)
+        if choix == "PLAY":
+            game_loop(window)
         
     pygame.quit()
