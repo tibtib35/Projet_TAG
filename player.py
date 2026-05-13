@@ -10,11 +10,10 @@ class Player(pygame.sprite.Sprite):
         self.last_jump_time = 0
         self.rect = pygame.Rect(x, GameConfig.Y_PLATFORM - GameConfig.PLAYER_H, self.hitbox_width, GameConfig.PLAYER_H)
 
-        # Image de course propre au joueur
+        # Image du joueur (la même pour tous les états)
         player_images = [GameConfig.PLAYER1_IMG, GameConfig.PLAYER2_IMG, GameConfig.PLAYER3_IMG]
         self.image_course = player_images[player_index % len(player_images)]
-        # Image idle : standing.png si dispo, sinon la même que la course
-        self.image_idle = GameConfig.STANDING_IMG if GameConfig.STANDING_IMG else self.image_course
+        self.image_idle = self.image_course
         self.image = self.image_course  # pour compatibilité avec le reste du code
 
         self.is_it = False
