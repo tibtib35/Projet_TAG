@@ -31,7 +31,5 @@ Notre super projet d'ouv info
 - [ ] Intégrer les animations de Joueur C dans le code de Joueur A **AxelC**
 
 
-**on peut sortir sur les bords à corriger**
-
 
 
