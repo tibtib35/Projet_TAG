@@ -21,7 +21,7 @@ Notre super projet d'ouv info
 
 ## 🟨 Version 2.0 : Visuels & Caméra
 - [X] Coder l'algorithme du Zoom Barycentrique (Calcul des limites des 3 joueurs) **AxelM**
-- [-] Créer l'écran de Menu (Boutons : Start, Paramètres, Quitter) **AxelM**
+- [X] Créer l'écran de Menu (Boutons : Start, Paramètres, Quitter) **AxelM**
 - [ ] Créer le menu de changement de touches (Key-rebinding) **AxelC**
 - [X] Réaliser les sprites d'animation simples (Idle, Run, Jump) pour les persos **Thibault**
 

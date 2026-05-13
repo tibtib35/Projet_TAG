@@ -93,17 +93,20 @@ def selected_player(surface):
         pygame.display.update()
 
 
-def menu_loop(surface):
-    font_play = pygame.font.SysFont('Consolas', 50, bold=True)
-    button_play = pygame.Rect(0, 0, 250, 80)
-    button_play.center = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2)
+def main_menu(surface):
+    font_titre = pygame.font.SysFont('Consolas', 80, bold=True)
+    font_bouton = pygame.font.SysFont('Consolas', 50)
+
+    button_jouer   = pygame.Rect(0, 0, 320, 70)
+    button_params  = pygame.Rect(0, 0, 320, 70)
+    button_quitter = pygame.Rect(0, 0, 320, 70)
 
     while True:
-        # --- 1. NETTOYAGE --- 
-        # C'est cette ligne qui fait disparaître les boutons "2 joueurs"
-        surface.fill((0, 0, 0)) 
-        
+        button_jouer.center   = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2 - 60)
+        button_params.center  = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2 + 20)
+        button_quitter.center = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2 + 100)
 
+        mouse_pos = pygame.mouse.get_pos()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -111,17 +114,28 @@ def menu_loop(surface):
             if event.type == pygame.VIDEORESIZE:
                 surface = update_window_size(event.w, event.h)
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if button_play.collidepoint(event.pos):
+                if button_jouer.collidepoint(mouse_pos):
                     return "PLAY"
+                if button_quitter.collidepoint(mouse_pos):
+                    return "QUIT"
 
-        # --- 2. DESSIN DU BOUTON PLAY ---
-        mouse_pos = pygame.mouse.get_pos()
-        couleur = (100, 255, 100) if button_play.collidepoint(mouse_pos) else (255, 215, 0)
-        
-        play_surface = font_play.render("LANCER LE JEU", True, couleur)
-        surface.blit(play_surface, (button_play.centerx - play_surface.get_width()//2, 
-                                     button_play.centery - play_surface.get_height()//2))
-        
+        surface.fill((0, 0, 0))
+
+        titre = font_titre.render("LOUP-TOUCHE", True, (255, 215, 0))
+        surface.blit(titre, (GameConfig.WINDOWW // 2 - titre.get_width() // 2, 150))
+
+        def blit_centre(txt_surf, rect):
+            surface.blit(txt_surf, (rect.centerx - txt_surf.get_width() // 2,
+                                    rect.centery - txt_surf.get_height() // 2))
+
+        couleur_j = (100, 255, 100) if button_jouer.collidepoint(mouse_pos) else (255, 255, 255)
+        blit_centre(font_bouton.render("JOUER", True, couleur_j), button_jouer)
+
+        blit_centre(font_bouton.render("PARAMETRES", True, (100, 100, 100)), button_params)
+
+        couleur_q = (100, 255, 100) if button_quitter.collidepoint(mouse_pos) else (255, 255, 255)
+        blit_centre(font_bouton.render("QUITTER", True, couleur_q), button_quitter)
+
         pygame.display.update()
 
 
@@ -241,32 +255,23 @@ if __name__ == "__main__":
     
     running = True
     while running:
-        # 1. On va d'abord à l'écran de sélection (2P / 3P)
-        choix = selected_player(window)
-        
-        if choix == "QUIT":
-            running = False
+        # 1. Menu principal
+        if main_menu(window) == "QUIT":
             break
 
-        # 2. Si on a sélectionné, on va vers le bouton "Lancer le jeu"
-        if choix in (2, 3):
-            GameConfig.PLAYER_COUNT = choix
-            confirmation = menu_loop(window)
-            
-            if confirmation == "QUIT":
-                running = False
-                break
-                
-            if confirmation == "PLAY":
-                # 3. On lance la partie
-                index_perdant = game_loop(window)
-                
-                # 4. Une fois fini, on affiche l'écran de fin
-                resultat_fin = end_screen(window, index_perdant)
-                
-                if resultat_fin == "QUIT":
-                    running = False
-                # Si resultat_fin == "REPLAY", la boucle "while running" 
-                # recommence naturellement au début (selected_player)
+        # 2. Sélection du nombre de joueurs
+        nb_joueurs = selected_player(window)
+        if nb_joueurs == "QUIT":
+            break
+
+        GameConfig.PLAYER_COUNT = nb_joueurs
+        pygame.event.clear()
+
+        # 3. Partie
+        index_perdant = game_loop(window)
+
+        # 4. Écran de fin — REPLAY relance depuis le menu principal
+        if end_screen(window, index_perdant) == "QUIT":
+            break
 
     pygame.quit()
