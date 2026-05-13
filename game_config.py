@@ -2,7 +2,7 @@ import pygame
 class GameConfig:
     WINDOWH = 800
     WINDOWW = 1200
-    MAP_W = 1200 
+    MAP_W = 1200
     MAP_H = 800   
     Y_PLATFORM = 516
     PLAYER_W = 32
