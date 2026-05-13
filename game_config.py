@@ -22,8 +22,11 @@ class GameConfig:
     PADDING = 150
     MIN_ZOOM_W = 900       
     CAMERA_SPEED = 0.05     # 5% de déplacement vers la cible à chaque frame (plus c'est petit, plus c'est fluide)
-
-
+    KEYS = [
+        {'jump': pygame.K_UP,   'left': pygame.K_LEFT, 'right': pygame.K_RIGHT},
+        {'jump': pygame.K_z,    'left': pygame.K_q,    'right': pygame.K_d},
+        {'jump': pygame.K_i,    'left': pygame.K_j,    'right': pygame.K_l},
+    ]
 
     def init():
         GameConfig.BACKGROUND_IMG = pygame.image.load("Ressources\\background.jpg")

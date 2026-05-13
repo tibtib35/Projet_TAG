@@ -10,32 +10,13 @@ def update_window_size(width, height):
     return pygame.display.set_mode((GameConfig.WINDOWW, GameConfig.WINDOWH), pygame.RESIZABLE)
 
 def get_next_moves(player_count):
-    # On crée une liste d'objets Move, un pour chaque joueur
     moves = [Move() for _ in range(player_count)]
     keys = pygame.key.get_pressed()
-
-    # Joueur 1 : Flèches directionnelles
-    if keys[pygame.K_UP]:
-        moves[0].jump = True
-    if keys[pygame.K_LEFT]:
-        moves[0].left = True
-    if keys[pygame.K_RIGHT]:
-        moves[0].right = True
-
-    # Joueur 2 : Z, Q, D (si un deuxième joueur existe)
-    if player_count > 1:
-        if keys[pygame.K_z]:
-            moves[1].jump = True
-        if keys[pygame.K_q]:
-            moves[1].left = True
-        if keys[pygame.K_d]:
-            moves[1].right = True
-
-    if player_count > 2:
-        if keys[pygame.K_i]: moves[2].jump = True
-        if keys[pygame.K_j]: moves[2].left = True
-        if keys[pygame.K_l]: moves[2].right = True
-
+    for i in range(player_count):
+        b = GameConfig.KEYS[i]
+        if keys[b['jump']]:  moves[i].jump  = True
+        if keys[b['left']]:  moves[i].left  = True
+        if keys[b['right']]: moves[i].right = True
     return moves
 
 
@@ -94,14 +75,23 @@ def selected_player(surface):
 
 
 def parametres_screen(surface):
-    # ---- Écran paramètres (key-rebinding à implémenter par AxelC) ----
-    font_titre  = pygame.font.SysFont('Consolas', 60, bold=True)
-    font_bouton = pygame.font.SysFont('Consolas', 45)
+    font_titre  = pygame.font.SysFont('Consolas', 55, bold=True)
+    font_normal = pygame.font.SysFont('Consolas', 28)
 
-    button_retour = pygame.Rect(0, 0, 280, 65)
+    actions       = ['jump', 'left', 'right']
+    labels_act    = ['SAUT', 'GAUCHE', 'DROITE']
+    labels_joueur = ['JOUEUR 1', 'JOUEUR 2', 'JOUEUR 3']
+
+    selected = None  # (player_idx, action_idx) en attente d'une touche
+    COL_W, ROW_H = 170, 55
+
+    button_retour = pygame.Rect(0, 0, 240, 55)
 
     while True:
-        button_retour.center = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2 + 100)
+        cx       = GameConfig.WINDOWW // 2
+        start_x  = cx - (3 * COL_W) // 2
+        start_y  = 170
+        button_retour.center = (cx, GameConfig.WINDOWH - 55)
         mouse_pos = pygame.mouse.get_pos()
 
         for event in pygame.event.get():
@@ -109,19 +99,61 @@ def parametres_screen(surface):
                 return "QUIT"
             if event.type == pygame.VIDEORESIZE:
                 surface = update_window_size(event.w, event.h)
+            if event.type == pygame.KEYDOWN:
+                if selected:
+                    pi, ai = selected
+                    GameConfig.KEYS[pi][actions[ai]] = event.key
+                    selected = None
+                elif event.key == pygame.K_ESCAPE:
+                    return "RETOUR"
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_retour.collidepoint(mouse_pos):
                     return "RETOUR"
+                for pi in range(3):
+                    for ai in range(3):
+                        cell = pygame.Rect(start_x + ai * COL_W,
+                                           start_y + (pi + 1) * ROW_H,
+                                           COL_W, ROW_H)
+                        if cell.collidepoint(mouse_pos):
+                            selected = (pi, ai)
 
         surface.fill((0, 0, 0))
 
         titre = font_titre.render("PARAMETRES", True, (255, 215, 0))
-        surface.blit(titre, (GameConfig.WINDOWW // 2 - titre.get_width() // 2, 150))
+        surface.blit(titre, (cx - titre.get_width() // 2, 80))
 
-        # TODO AxelC : key-rebinding ici
+        # En-têtes colonnes
+        for ai, lbl in enumerate(labels_act):
+            t = font_normal.render(lbl, True, (180, 180, 180))
+            surface.blit(t, (start_x + ai * COL_W + COL_W // 2 - t.get_width() // 2,
+                             start_y + 12))
+
+        # Grille
+        for pi in range(3):
+            lbl = font_normal.render(labels_joueur[pi], True, (255, 255, 255))
+            surface.blit(lbl, (start_x - lbl.get_width() - 15,
+                               start_y + (pi + 1) * ROW_H + ROW_H // 2 - lbl.get_height() // 2))
+            for ai in range(3):
+                cell = pygame.Rect(start_x + ai * COL_W,
+                                   start_y + (pi + 1) * ROW_H,
+                                   COL_W, ROW_H)
+                is_sel = selected == (pi, ai)
+                border_color = (255, 215, 0) if is_sel else (80, 80, 80)
+                pygame.draw.rect(surface, border_color, cell, 2)
+
+                key_name = "???" if is_sel else pygame.key.name(GameConfig.KEYS[pi][actions[ai]]).upper()
+                color    = (255, 215, 0) if is_sel else (100, 255, 100)
+                t = font_normal.render(key_name, True, color)
+                surface.blit(t, (cell.centerx - t.get_width() // 2,
+                                 cell.centery - t.get_height() // 2))
+
+        if selected:
+            msg = font_normal.render("Appuie sur une touche...", True, (255, 215, 0))
+            surface.blit(msg, (cx - msg.get_width() // 2,
+                               start_y + 4 * ROW_H + 10))
 
         couleur_r = (100, 255, 100) if button_retour.collidepoint(mouse_pos) else (255, 255, 255)
-        txt_r = font_bouton.render("RETOUR", True, couleur_r)
+        txt_r = font_normal.render("RETOUR", True, couleur_r)
         surface.blit(txt_r, (button_retour.centerx - txt_r.get_width() // 2,
                               button_retour.centery - txt_r.get_height() // 2))
 
