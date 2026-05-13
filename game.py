@@ -93,6 +93,41 @@ def selected_player(surface):
         pygame.display.update()
 
 
+def parametres_screen(surface):
+    # ---- Écran paramètres (key-rebinding à implémenter par AxelC) ----
+    font_titre  = pygame.font.SysFont('Consolas', 60, bold=True)
+    font_bouton = pygame.font.SysFont('Consolas', 45)
+
+    button_retour = pygame.Rect(0, 0, 280, 65)
+
+    while True:
+        button_retour.center = (GameConfig.WINDOWW // 2, GameConfig.WINDOWH // 2 + 100)
+        mouse_pos = pygame.mouse.get_pos()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return "QUIT"
+            if event.type == pygame.VIDEORESIZE:
+                surface = update_window_size(event.w, event.h)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if button_retour.collidepoint(mouse_pos):
+                    return "RETOUR"
+
+        surface.fill((0, 0, 0))
+
+        titre = font_titre.render("PARAMETRES", True, (255, 215, 0))
+        surface.blit(titre, (GameConfig.WINDOWW // 2 - titre.get_width() // 2, 150))
+
+        # TODO AxelC : key-rebinding ici
+
+        couleur_r = (100, 255, 100) if button_retour.collidepoint(mouse_pos) else (255, 255, 255)
+        txt_r = font_bouton.render("RETOUR", True, couleur_r)
+        surface.blit(txt_r, (button_retour.centerx - txt_r.get_width() // 2,
+                              button_retour.centery - txt_r.get_height() // 2))
+
+        pygame.display.update()
+
+
 def main_menu(surface):
     font_titre = pygame.font.SysFont('Consolas', 80, bold=True)
     font_bouton = pygame.font.SysFont('Consolas', 50)
@@ -116,6 +151,9 @@ def main_menu(surface):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_jouer.collidepoint(mouse_pos):
                     return "PLAY"
+                if button_params.collidepoint(mouse_pos):
+                    if parametres_screen(surface) == "QUIT":
+                        return "QUIT"
                 if button_quitter.collidepoint(mouse_pos):
                     return "QUIT"
 
@@ -131,7 +169,8 @@ def main_menu(surface):
         couleur_j = (100, 255, 100) if button_jouer.collidepoint(mouse_pos) else (255, 255, 255)
         blit_centre(font_bouton.render("JOUER", True, couleur_j), button_jouer)
 
-        blit_centre(font_bouton.render("PARAMETRES", True, (100, 100, 100)), button_params)
+        couleur_p = (100, 255, 100) if button_params.collidepoint(mouse_pos) else (255, 255, 255)
+        blit_centre(font_bouton.render("PARAMETRES", True, couleur_p), button_params)
 
         couleur_q = (100, 255, 100) if button_quitter.collidepoint(mouse_pos) else (255, 255, 255)
         blit_centre(font_bouton.render("QUITTER", True, couleur_q), button_quitter)
