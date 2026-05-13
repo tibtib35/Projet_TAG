@@ -1,7 +1,9 @@
 import pygame
+import random
 from game_config import GameConfig
 from player import Player
 from tiled_map import TiledMap
+from bonus import spawn_bonus_aleatoire
 
 class GameState:
     def __init__(self):
@@ -46,6 +48,12 @@ class GameState:
         
         self.canvas = pygame.Surface((map_w, map_h))
         self.camera_actuelle = None
+
+        # Système de bonus
+        self.bonus_list = []
+        self.prochain_bonus = pygame.time.get_ticks() + random.randint(
+            GameConfig.BONUS_INTERVALLE_MIN, GameConfig.BONUS_INTERVALLE_MAX
+        )
 
     def _create_players_from_spawns(self, spawn_points):
         players = []
@@ -95,11 +103,15 @@ class GameState:
         if self.tiled_map:
             self.tiled_map.draw(self.canvas)
             
-        # 4. On dessine tous les joueurs sur le CANVAS
+        # 4. On dessine les bonus sur le CANVAS
+        for b in self.bonus_list:
+            b.draw(self.canvas)
+
+        # 5. On dessine tous les joueurs sur le CANVAS
         for p in self.player:
             p.draw(self.canvas)
             
-        # 5. On dessine les obstacles de secours (si la carte n'a pas chargé) sur le CANVAS
+        # 6. On dessine les obstacles de secours (si la carte n'a pas chargé) sur le CANVAS
         if not self.tiled_map:
             for obs in self.obstacle:
                 pygame.draw.rect(self.canvas, (0, 0, 0), obs)
@@ -198,6 +210,27 @@ class GameState:
             p.advance_state(all_moves[i], self.obstacle)
 
         current_time = pygame.time.get_ticks()
+
+        # --- Spawn d'un nouveau bonus ---
+        if current_time > self.prochain_bonus:
+            nouveau = spawn_bonus_aleatoire(self.obstacle)
+            if nouveau:
+                self.bonus_list.append(nouveau)
+            self.prochain_bonus = current_time + random.randint(
+                GameConfig.BONUS_INTERVALLE_MIN, GameConfig.BONUS_INTERVALLE_MAX
+            )
+
+        # --- Pickup : un joueur touche un bonus ---
+        for bonus in self.bonus_list:
+            if not bonus.actif:
+                continue
+            for p in self.player:
+                if p.rect.colliderect(bonus.rect):
+                    p.appliquer_bonus(bonus.type)
+                    bonus.actif = False
+
+        # On supprime les bonus ramassés de la liste
+        self.bonus_list = [b for b in self.bonus_list if b.actif]
 
         loup = None
         for p in self.player:

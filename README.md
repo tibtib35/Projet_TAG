@@ -26,9 +26,9 @@ Notre super projet d'ouv info
 - [X] Réaliser les sprites d'animation simples (Idle, Run, Jump) pour les persos **Thibault**
 
 ## 🟧 Version 3.0 : Bonus & Événements
-- [ ] Créer le système de Bonus (Spawn aléatoire, boosts de vitesse/saut) **Thibault**
+- [X] Créer le système de Bonus (Spawn aléatoire, boosts de vitesse/saut) **Thibault**
 - [X] Coder l'écran de fin de partie avec le pseudo du perdant **AxelM**
-- [ ] Intégrer les animations de Joueur C dans le code de Joueur A **AxelC**
+- [X] Intégrer les animations de Joueur C dans le code de Joueur A **AxelC**
 
 
 
