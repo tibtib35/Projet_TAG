@@ -68,7 +68,11 @@ def selected_player(surface):
             if event.type == pygame.VIDEORESIZE:
                 surface = update_window_size(event.w, event.h)
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if button_3p.collidepoint(mouse_pos) or button_2p.collidepoint(mouse_pos):
+                if button_2p.collidepoint(mouse_pos):
+                    GameConfig.PLAYER_COUNT = 2
+                    return "PLAY"
+                if button_3p.collidepoint(mouse_pos):
+                    GameConfig.PLAYER_COUNT = 3
                     return "PLAY"
 
 

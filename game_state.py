@@ -13,6 +13,8 @@ class GameState:
         try:
             self.tiled_map = TiledMap("Ressources\\carte1_TAG.tmx")
             GameConfig.Y_PLATFORM = self.tiled_map.height
+            GameConfig.MAP_W = self.tiled_map.width
+            GameConfig.MAP_H = self.tiled_map.height
         except Exception:
             self.tiled_map = None
 
