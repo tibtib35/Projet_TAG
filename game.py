@@ -74,6 +74,8 @@ def selected_player(surface):
                     return 3
 
 
+        surface.fill((0, 0, 0))
+
         # Affichage du titre
         titre_surface = font_titre.render("LOUP-TOUCHE", True, (255, 215, 0))
         surface.blit(titre_surface, (GameConfig.WINDOWW//2 - titre_surface.get_width()//2, 150))
