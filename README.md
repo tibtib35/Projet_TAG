@@ -10,7 +10,7 @@ Notre super projet d'ouv info
 ## 🟦 Version 0.1 : Le Socle
 - [X] Créer la classe `Player` (ID, contrôles personnalisés, double saut) **Thibault**
 - [X] Mettre en place la boucle de jeu `main.py` et le gestionnaire d'états (Menu/Jeu) **AxelM**
-- [X] Dessiner la map fixe (liste de Rectangles pour les plateformes) **AxelC**
+- [X] Dessiner la map fixe (liste de Rectangles pour les plateformes) **AxelM et AxelC**
 - [X] Intégrer la détection de collision simple Joueur/Plateforme **Thibault**
 
 ## 🟩 Version 1.0 : Le Gameplay "Tag"
