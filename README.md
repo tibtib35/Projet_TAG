@@ -30,6 +30,8 @@ Notre super projet d'ouv info
 - [X] Coder l'écran de fin de partie avec le pseudo du perdant **AxelM**
 - [X] Intégrer les animations de Joueur C dans le code de Joueur A **AxelC**
 
+- [X] ajout de la modification du temps d'une partie dans les paramètres
+
 
 
 
