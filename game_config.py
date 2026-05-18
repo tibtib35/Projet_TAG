@@ -8,6 +8,7 @@ class GameConfig:
     PLAYER_W = 32
     PLAYER_H = 32
     PLAYER_COUNT = 2
+    GAME_TIME = 30
     BACKGROUND_IMG = None
     PLAYER1_IMG = None
     PLAYER2_IMG = None

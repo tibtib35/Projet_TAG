@@ -82,8 +82,12 @@ def parametres_screen(surface):
     labels_act    = ['SAUT', 'GAUCHE', 'DROITE']
     labels_joueur = ['JOUEUR 1', 'JOUEUR 2', 'JOUEUR 3']
 
+    time_selection = ["30", "60", "90"]
+
     selected = None  # (player_idx, action_idx) en attente d'une touche
     COL_W, ROW_H = 170, 55
+
+    
 
     button_retour = pygame.Rect(0, 0, 240, 55)
 
@@ -109,6 +113,12 @@ def parametres_screen(surface):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if button_retour.collidepoint(mouse_pos):
                     return "RETOUR"
+                for i in range(3):
+                    time_rect = pygame.Rect(start_x + i * COL_W,
+                                           470,
+                                           COL_W, 60)
+                    if time_rect.collidepoint(mouse_pos):
+                        GameConfig.GAME_TIME = int(time_selection[i])
                 for pi in range(3):
                     for ai in range(3):
                         cell = pygame.Rect(start_x + ai * COL_W,
@@ -147,10 +157,41 @@ def parametres_screen(surface):
                 surface.blit(t, (cell.centerx - t.get_width() // 2,
                                  cell.centery - t.get_height() // 2))
 
+
         if selected:
             msg = font_normal.render("Appuie sur une touche...", True, (255, 215, 0))
             surface.blit(msg, (cx - msg.get_width() // 2,
                                start_y + 4 * ROW_H + 10))
+            
+        t_txt = font_normal.render("time", True, (255, 255, 255))
+        surface.blit(t_txt, (start_x - t_txt.get_width() - 15, 500 - t_txt.get_height() // 2))
+
+
+        for i in range(3):
+            time_value = int(time_selection[i])
+            time_rect = pygame.Rect(start_x + i * COL_W,
+                                   470,
+                                   COL_W, 60)
+            
+            is_selected = time_value == GameConfig.GAME_TIME
+            is_hovered = time_rect.collidepoint(mouse_pos)
+            
+            # Déterminer la couleur
+            if is_selected:
+                color = (100, 255, 100)
+                border_color = (100, 255, 100)
+            elif is_hovered:
+                color = (255, 215, 0)
+                border_color = (255, 215, 0)
+            else:
+                color = (255, 255, 255)
+                border_color = (80, 80, 80)
+            
+            pygame.draw.rect(surface, border_color, time_rect, 2)
+            
+            t_lbl = font_normal.render(time_selection[i], True, color)
+            surface.blit(t_lbl, (start_x + i * COL_W + COL_W // 2 - t_lbl.get_width() // 2,
+                                 500 - t_lbl.get_height() // 2))
 
         couleur_r = (100, 255, 100) if button_retour.collidepoint(mouse_pos) else (255, 255, 255)
         txt_r = font_normal.render("RETOUR", True, couleur_r)
@@ -217,7 +258,7 @@ def game_loop(surface):
     game_state = GameState()
     clock = pygame.time.Clock()
 
-    counter, text = 30, '30'.rjust(3)
+    counter, text = GameConfig.GAME_TIME, str(GameConfig.GAME_TIME).rjust(3)
     pygame.time.set_timer(pygame.USEREVENT, 1000)
     font = pygame.font.SysFont('Consolas', 30)
 
