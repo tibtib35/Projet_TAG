@@ -9,8 +9,8 @@ Notre super projet d'ouv info
 
 ## 🟦 Version 0.1 : Le Socle
 - [X] Créer la classe `Player` (ID, contrôles personnalisés, double saut) **Thibault**
-- [X] Mettre en place la boucle de jeu `main.py` et le gestionnaire d'états (Menu/Jeu) **AxelM**
-- [X] Dessiner la map fixe (liste de Rectangles pour les plateformes) **AxelM et AxelC**
+- [X] Mettre en place la boucle de jeu `main.py` et le gestionnaire d'états (Menu/Jeu) **AxelM et AxelC**
+- [X] Dessiner la map fixe (liste de Rectangles pour les plateformes) **AxelM**
 - [X] Intégrer la détection de collision simple Joueur/Plateforme **Thibault**
 
 ## 🟩 Version 1.0 : Le Gameplay "Tag"
@@ -21,14 +21,14 @@ Notre super projet d'ouv info
 
 ## 🟨 Version 2.0 : Visuels & Caméra
 - [X] Coder l'algorithme du Zoom Barycentrique (Calcul des limites des 3 joueurs) **AxelM**
-- [X] Créer l'écran de Menu (Boutons : Start, Paramètres, Quitter) **AxelM**
+- [X] Créer l'écran de Menu (Boutons : Start, Paramètres, Quitter) **AxelC**
 - [X] Créer le menu de changement de touches (Key-rebinding) **AxelC**
-- [X] Réaliser les sprites d'animation simples (Idle, Run, Jump) pour les persos **Thibault**
+- [X] Trouver des sprites **Thibault**
 
 ## 🟧 Version 3.0 : Bonus & Événements
 - [X] Créer le système de Bonus (Spawn aléatoire, boosts de vitesse/saut) **Thibault**
-- [X] Coder l'écran de fin de partie avec le pseudo du perdant **AxelM**
-- [X] Intégrer les animations de Joueur C dans le code de Joueur A **AxelC**
+- [X] Coder l'écran de fin de partie avec le pseudo du perdant **AxelM et AxelC**
+
 
 
 
